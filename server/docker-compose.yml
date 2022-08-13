@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - 6379:6379
+      - 8001:8001
+    environment:
+      REDIS_DATA_DIR: /data
+      REDIS_ARGS: --save 20 1
+    volumes:
+      - redis:/data:rw
+    restart: always
+
+  app:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    environment:
+      - _APP_REDIS_URL
+      - _APP_PORT
+    volumes:
+      - ./:/home/node/app
+
+volumes:
+  redis:
