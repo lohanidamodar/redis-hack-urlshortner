@@ -21,6 +21,7 @@ services:
     environment:
       - _APP_REDIS_URL
       - _APP_PORT
+      - _APP_BASE_URL
     volumes:
       - ./:/home/node/app
 

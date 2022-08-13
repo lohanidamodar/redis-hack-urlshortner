@@ -2,16 +2,17 @@ import { Router } from 'express'
 import { urlRepository } from '../om/url.js'
 import { v4 } from 'uuid'
 import { connection as client } from '../om/client.js';
-const PORT = process.env.port || 8000;
-const baseUrl = process.env.BASE_URL || `http://localhost:${PORT}`;
+const PORT = process.env._APP_PORT || 8000;
+const baseUrl = process.env._APP_BASE_URL || `http://localhost:${PORT}`;
 
 export const router = Router()
 
 const getUrls = async (req, res, next) => {
-    if(req.params.shortName !== "urls")
-        next()
-    const urls = await urlRepository.search().return.all()
-    res.send(urls)
+    if(req.params.shortName === "urls") {
+        const urls = await urlRepository.search().return.all()
+        return res.send(urls)
+    }
+    next()
 }
 
 const redirect = async (req, res) => {
