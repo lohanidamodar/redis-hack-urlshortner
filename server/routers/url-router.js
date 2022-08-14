@@ -9,7 +9,15 @@ export const router = Router()
 
 const getUrls = async (req, res, next) => {
     if(req.params.shortName === "urls") {
-        const urls = await urlRepository.search().return.all()
+        let urls = await urlRepository.search().return.all()
+        urls = urls.map((url) => ({
+            id: url.entityId,
+            shortName: url.shortName,
+            originalUrl: url.originalUrl,
+            shortUrl: baseUrl + "/" + url.shortName,
+            createdAt: url.createdAt,
+            updatedAt: url.updatedAt
+        }))
         return res.send(urls)
     }
     next()
@@ -39,7 +47,7 @@ router.get('/urls/:id', async (req, res) => {
         id: url.entityId,
         shortName: url.shortName,
         originalUrl: url.originalUrl,
-        shortUrl: baseUrl + "/" + shortName,
+        shortUrl: baseUrl + "/" + url.shortName,
         createdAt: url.createdAt,
         updatedAt: url.updatedAt
     })

@@ -1,12 +1,10 @@
 <script lang="ts">
+import Link from "$lib/components/Link.svelte";
+
     let originalUrl: String;
     let urlDetails: any;
     let error: '';
-    
-    let onCopy = (event: Event) => {
-        console.log('copied to clipboard');
-        navigator.clipboard.writeText(urlDetails?.shortUrl);
-    }
+
     let onShorten = async (event: Event) => {
         event.preventDefault();
         let res = await fetch('https://8000-lohanidamod-redishackur-9nx4sio0v2b.ws-us60.gitpod.io/urls', {
@@ -27,37 +25,16 @@
         }
     }
 </script>
-<h1>Best URL Shortner</h1>
+
 <div>
     <input bind:value="{originalUrl}" type="text" name="originalUrl" placeholder="Shorten your url" />
     <button on:click="{onShorten}">Shorten!</button>
 </div>
 {#if urlDetails}
-<div class="shortened">
-    <span>{urlDetails?.originalUrl ?? 'https://google.com'}</span>
-    <span><a href="{urlDetails?.shortUrl ?? ''}" target="_blank">{urlDetails?.shortName ?? '4abdcf'}</a></span>
-    <button on:click="{onCopy}" class="secondary">copy</button>
-</div>
+<Link link={urlDetails} />
 {/if}
 
 <style>
-    div.shortened {
-        background-color: #dddddd;
-        border-radius: 8px;
-    }
-
-    div.shortened span {
-        margin-left: 20px;
-    }
-    div {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        box-sizing: border-box;
-    }
     input {
         padding: 10px 20px;
         flex-grow: 1;
