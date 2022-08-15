@@ -5,10 +5,8 @@ html, body {
 
 button {
     border: none;
-    width: 150px;
     background: #1b3987;
     color: white;
-    margin-left: 10px;
     border-radius: 8px;
     cursor: pointer;
     height: 50px;

@@ -2,8 +2,10 @@
 import Link from "$lib/components/Link.svelte";
 
     let originalUrl: String;
+    let shortName: String;
     let urlDetails: any;
     let error: '';
+    let customName: boolean = true;
 
     let onShorten = async (event: Event) => {
         event.preventDefault();
@@ -15,6 +17,7 @@ import Link from "$lib/components/Link.svelte";
             },
             body: JSON.stringify({
                 originalUrl: originalUrl,
+                shortName: shortName
             })
         });
         let data = await res.json();
@@ -27,8 +30,12 @@ import Link from "$lib/components/Link.svelte";
 </script>
 <div>
     <input bind:value="{originalUrl}" type="text" name="originalUrl" placeholder="Shorten your url" />
+    {#if customName}
+        <input class="width-small" placeholder="custom short url" type="text" bind:value={shortName} />
+    {/if}
     <button on:click="{onShorten}">Shorten!</button>
 </div>
+
 {#if urlDetails}
 <Link link={urlDetails} />
 {/if}
@@ -45,7 +52,9 @@ import Link from "$lib/components/Link.svelte";
         padding: 20px;
         margin: 20px;
         box-sizing: border-box;
+        flex: 2;
     }
+
     input {
         padding: 10px 20px;
         flex-grow: 1;
@@ -59,6 +68,33 @@ import Link from "$lib/components/Link.svelte";
         font-size: 20px;
         color: #36383b;
         padding: 0 20px;
+    }
+    input.width-small {
+        flex: 1;
+    }
+
+    button {
+        margin-left: 10px;
+        width: 150px;
+    }
+
+    @media (max-width: 936px){
+        div {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        input {
+            margin-right: 0;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        input.width-small {
+            flex: none;
+        }
+        button {
+            margin-left: 0;
+            width: auto;
+        }
     }
     input:hover {
         border-color: #b0b1b4;
