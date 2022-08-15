@@ -4,11 +4,21 @@ import Link from "$lib/components/Link.svelte";
     let originalUrl: String;
     let shortName: String;
     let urlDetails: any;
-    let error: '';
+    let error: String = '';
     let customName: boolean = true;
 
     let onShorten = async (event: Event) => {
         event.preventDefault();
+        if(!originalUrl) {
+            error = 'URL is required';
+            return;
+        }
+
+        if(!(originalUrl.startsWith('http://') && originalUrl.startsWith('https://'))) {
+            error = 'Not a valid url';
+            return;
+        }
+
         let res = await fetch('https://8000-lohanidamod-redishackur-9nx4sio0v2b.ws-us60.gitpod.io/urls', {
             method: 'POST',
             mode: 'cors',
@@ -35,6 +45,10 @@ import Link from "$lib/components/Link.svelte";
     {/if}
     <button on:click="{onShorten}">Shorten!</button>
 </div>
+
+{#if error}
+    <p class="error">{error}</p>
+{/if}
 
 {#if urlDetails}
 <Link link={urlDetails} />
@@ -76,6 +90,11 @@ import Link from "$lib/components/Link.svelte";
     button {
         margin-left: 10px;
         width: 150px;
+    }
+
+    p.error {
+        padding: 0 20px;
+        color: red;
     }
 
     @media (max-width: 936px){

@@ -40,6 +40,7 @@
 		background: #edf2fe;
 		color: #2a5bd7;
 		height: 35px;
+        margin-left: 20px;
 	}
 	button:hover {
 		background: #cedafa;
