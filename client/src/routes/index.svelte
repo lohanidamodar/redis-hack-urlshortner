@@ -14,7 +14,7 @@ import Link from "$lib/components/Link.svelte";
             return;
         }
 
-        if(!(originalUrl.startsWith('http://') && originalUrl.startsWith('https://'))) {
+        if(!(originalUrl.startsWith('http://') || originalUrl.startsWith('https://'))) {
             error = 'Not a valid url';
             return;
         }
