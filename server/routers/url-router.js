@@ -81,10 +81,10 @@ router.post('/urls/', async (req, res) => {
             updatedAt: new Date()
         })
         await client.ts.create(url.entityId, {
-            RETENTION: 2 * 60 * 60 * 1000,
+            RETENTION: 28 * 60 * 60 * 1000,
         })
         await client.ts.create(url.entityId+":hourly", {
-            RETENTION: 28 * 60 * 60 * 1000,
+            RETENTION: 33 * 24 * 60 * 60 * 1000,
         })
         
         //keep the total hits for lifetime
@@ -112,17 +112,50 @@ router.get('/urls/:id/usage', async (req, res) => {
     
     try {
         
-        let from = url.createdAt ?? new Date().getTime();
-        from = Math.min(from, new Date().getTime() - 24 * 3600000);
+        let from = Math.min(url.createdAt, new Date().getTime() - 24 * 3600000);
         
         // normalize to hour
         from = Math.floor(from / 3600000) * 3600000;
         const to = Math.ceil(new Date() / 3600000) * 3600000;
 
-        const data = await client.ts.range(url.entityId + ":hourly", from, to)
+        const data = await client.ts.range(url.entityId, from, to)
 
         const hours = [];
         for(let i = from; i <= to; i += 3600000) {
+            hours.push(new Date(i))
+        }
+        const usage = hours.map((hour) => {
+            const hourData = data.find((d) => d.timestamp == hour.getTime())
+            return {
+                datetime: hour.toString(),
+                timestamp: hour.getTime(),
+                usage: hourData ? hourData.value : 0
+            }
+        });
+
+
+        res.send(usage)
+    } catch(e) {
+        console.log(e)
+        res.status(500).send({error: 'Unexpected error'})
+    }
+})
+
+router.get('/urls/:id/usage/daily', async (req, res) => {
+    const url = await urlRepository.fetch(req.params.id);
+    if(!url)
+        return res.status(404).send({error: "Requested resource not found"})
+    
+    try {
+        
+        let from = Math.min(url.createdAt, new Date().getTime() - 30 * 24 * 3600000);
+        from = new Date(from).setUTCHours(0,0,0,0);
+        const to = new Date().setUTCHours(0,0,0,0);
+
+        const data = await client.ts.range(url.entityId + ":hourly", from, to)
+
+        const hours = [];
+        for(let i = from; i <= to; i += 24 * 3600000) {
             hours.push(new Date(i))
         }
         const usage = hours.map((hour) => {
