@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Link from '$lib/components/Link.svelte';
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let urls: any[] = [];
 	let error: string;

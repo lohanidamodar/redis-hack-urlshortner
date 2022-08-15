@@ -6,15 +6,20 @@
 	};
 </script>
 
-<div>
-	<span>{link.originalUrl}</span>
-	<p>
-		<span><a href={link.shortUrl} target="_blank">{link.shortUrl}</a></span>
-		<button on:click={onCopy}>copy</button>
-	</p>
-</div>
+<a href={'/links/' + link.id}>
+	<div>
+		<span>{link.originalUrl}</span>
+		<p>
+			<span><a href={link.shortUrl} target="_blank">{link.shortUrl}</a></span>
+			<button on:click={onCopy}>copy</button>
+		</p>
+	</div>
+</a>
 
 <style>
+	a {
+		text-decoration: none;
+	}
 	div {
 		background-color: #dddddd;
 		border-radius: 8px;

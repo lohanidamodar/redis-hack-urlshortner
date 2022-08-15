@@ -118,7 +118,12 @@ router.get('/urls/:id/usage', async (req, res) => {
         from = Math.floor(from / 3600000) * 3600000;
         const to = Math.ceil(new Date() / 3600000) * 3600000;
 
-        const data = await client.ts.range(url.entityId, from, to)
+        const data = await client.ts.range(url.entityId, from, to, {
+            AGGREGATION: {
+                type: "SUM",
+                timeBucket: 60 * 60 * 1000
+            }
+        })
 
         const hours = [];
         for(let i = from; i <= to; i += 3600000) {
@@ -129,7 +134,7 @@ router.get('/urls/:id/usage', async (req, res) => {
             return {
                 datetime: hour.toString(),
                 timestamp: hour.getTime(),
-                usage: hourData ? hourData.value : 0
+                value: hourData ? hourData.value : 0
             }
         });
 
@@ -152,7 +157,12 @@ router.get('/urls/:id/usage/daily', async (req, res) => {
         from = new Date(from).setUTCHours(0,0,0,0);
         const to = new Date().setUTCHours(0,0,0,0);
 
-        const data = await client.ts.range(url.entityId + ":hourly", from, to)
+        const data = await client.ts.range(url.entityId + ":hourly", from, to, {
+            AGGREGATION: {
+                type: "SUM",
+                timeBucket: 24 * 60 * 60 * 1000
+            }
+        })
 
         const hours = [];
         for(let i = from; i <= to; i += 24 * 3600000) {
@@ -163,7 +173,7 @@ router.get('/urls/:id/usage/daily', async (req, res) => {
             return {
                 datetime: hour.toString(),
                 timestamp: hour.getTime(),
-                usage: hourData ? hourData.value : 0
+                value: hourData ? hourData.value : 0
             }
         });
 
