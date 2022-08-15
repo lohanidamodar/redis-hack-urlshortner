@@ -29,6 +29,7 @@ const redirect = async (req, res) => {
         return res.status(404).send("URL not found");
     }
     await client.ts.add(url.entityId, new Date().getTime(), 1)
+    await client.ts.incrBy(url.entityId + ":hits", 1)
     res.redirect(url.originalUrl)
 }
 
@@ -80,6 +81,7 @@ router.post('/urls/', async (req, res) => {
             updatedAt: new Date()
         })
         await client.ts.create(url.entityId)
+        await client.ts.create(url.entityId+":hits")
         res.status(201).send({
             id: url.entityId,
             shortName: url.shortName,
@@ -94,17 +96,58 @@ router.post('/urls/', async (req, res) => {
     }
 })
 
-// router.get('/urls/:id/usage', async (req, res) => {
-//     const url = await urlRepository.fetch(req.params.id);
-//     if(!url)
-//         return res.status(404).send({error: "Requested resource not found"})
+router.get('/urls/:id/usage', async (req, res) => {
+    const url = await urlRepository.fetch(req.params.id);
+    if(!url)
+        return res.status(404).send({error: "Requested resource not found"})
     
-//     try {
-//         const data = await client.ts.range(req.params.id, new Date(url.createdAt), new Date(), {
-//             AGGREGATION: "avg 3600000"
-//         })
-//     } catch(e) {
-//         console.log(e)
-//         res.status(500).send({error: 'Unexpected error'})
-//     }
-// })
+    try {
+        
+        let from = url.createdAt ?? new Date().getTime();
+        from = Math.min(from, new Date().getTime() - 24 * 3600000);
+        
+        // normalize to hour
+        from = Math.floor(from / 3600000) * 3600000;
+        const to = Math.ceil(new Date() / 3600000) * 3600000;
+
+        const data = await client.ts.range(url.entityId, from, to, {
+            AGGREGATION: {
+                type: "SUM",
+                timeBucket: 3600000,
+            },
+        })
+
+        const hours = [];
+        for(let i = from; i <= to; i += 3600000) {
+            hours.push(new Date(i))
+        }
+        const usage = hours.map((hour) => {
+            const hourData = data.find((d) => d.timestamp == hour.getTime())
+            return {
+                datetime: hour.toString(),
+                timestamp: hour.getTime(),
+                usage: hourData ? hourData.value : 0
+            }
+        });
+
+
+        res.send(usage)
+    } catch(e) {
+        console.log(e)
+        res.status(500).send({error: 'Unexpected error'})
+    }
+})
+
+router.get('/urls/:id/hits', async (req, res) => {
+    const url = await urlRepository.fetch(req.params.id);
+    if(!url)
+        return res.status(404).send({error: "Requested resource not found"})
+    
+    try {
+        const data = await client.ts.get(url.entityId+":hits")
+        res.send(data)
+    } catch(e) {
+        console.log(e)
+        res.status(500).send({error: 'Unexpected error'})
+    }
+})
