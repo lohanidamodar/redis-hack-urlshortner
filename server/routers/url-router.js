@@ -80,8 +80,17 @@ router.post('/urls/', async (req, res) => {
             createdAt: new Date(),
             updatedAt: new Date()
         })
-        await client.ts.create(url.entityId)
+        await client.ts.create(url.entityId, {
+            RETENTION: 2 * 60 * 60 * 1000,
+        })
+        await client.ts.create(url.entityId+":hourly", {
+            RETENTION: 28 * 60 * 60 * 1000,
+        })
+        
+        //keep the total hits for lifetime
         await client.ts.create(url.entityId+":hits")
+
+        await client.ts.createRule(url.entityId, url.entityId+":hourly", "SUM", 3600000)
         res.status(201).send({
             id: url.entityId,
             shortName: url.shortName,
@@ -110,12 +119,7 @@ router.get('/urls/:id/usage', async (req, res) => {
         from = Math.floor(from / 3600000) * 3600000;
         const to = Math.ceil(new Date() / 3600000) * 3600000;
 
-        const data = await client.ts.range(url.entityId, from, to, {
-            AGGREGATION: {
-                type: "SUM",
-                timeBucket: 3600000,
-            },
-        })
+        const data = await client.ts.range(url.entityId + ":hourly", from, to)
 
         const hours = [];
         for(let i = from; i <= to; i += 3600000) {
