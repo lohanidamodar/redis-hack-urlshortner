@@ -1,3 +1,21 @@
-body {
+html, body {
     font-family: 'Poppins';
+    margin: 0;
+}
+
+button {
+    border: none;
+    width: 150px;
+    background: #1b3987;
+    color: white;
+    margin-left: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 50px;
+}
+button:hover {
+    background: #2a5bd7;
+}
+button:focus {
+    box-shadow: 0 0 0 2px rgb(206 218 250);
 }

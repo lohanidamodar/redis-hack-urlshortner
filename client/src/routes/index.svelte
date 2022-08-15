@@ -25,7 +25,6 @@ import Link from "$lib/components/Link.svelte";
         }
     }
 </script>
-
 <div>
     <input bind:value="{originalUrl}" type="text" name="originalUrl" placeholder="Shorten your url" />
     <button on:click="{onShorten}">Shorten!</button>
@@ -35,6 +34,18 @@ import Link from "$lib/components/Link.svelte";
 {/if}
 
 <style>
+    div {
+        background-color: #dddddd;
+        border-radius: 8px;
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        margin: 20px;
+        box-sizing: border-box;
+    }
     input {
         padding: 10px 20px;
         flex-grow: 1;
@@ -58,29 +69,5 @@ import Link from "$lib/components/Link.svelte";
     -moz-box-shadow: 0 0 0 2px rgba(206,218,250,1);
     box-shadow: 0 0 0 2px rgb(206 218 250);
     }
-    button {
-        border: none;
-        width: 150px;
-        background: #1b3987;
-        color: white;
-        margin-left: 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        height: 50px;
-    }
-    button:hover {
-        background: #2a5bd7;
-    }
-    button:focus {
-        box-shadow: 0 0 0 2px rgb(206 218 250);
-    }
-    button.secondary {
-        background: #edf2fe;
-    color: #2a5bd7;
-    height: 35px;
-    }
-    button.secondary:hover {
-        background: #cedafa;
-    color: #2a5bd7;
-    }
+
 </style>
