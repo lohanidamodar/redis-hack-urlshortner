@@ -2,8 +2,8 @@ import { Router } from 'express'
 import { urlRepository } from '../om/url.js'
 import { v4 } from 'uuid'
 import { connection as client } from '../om/client.js';
-const PORT = process.env._APP_PORT || 8000;
-const baseUrl = process.env._APP_BASE_URL || `http://localhost:${PORT}`;
+const PORT = process.env.APP_PORT || 8000;
+const baseUrl = process.env.APP_BASE_URL || `http://localhost:${PORT}`;
 
 export const router = Router()
 

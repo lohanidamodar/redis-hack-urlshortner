@@ -2,7 +2,7 @@ import { Client } from 'redis-om'
 import { createClient } from 'redis'
 
 /* pulls the Redis URL from .env */
-const url = process.env._APP_REDIS_URL
+const url = process.env.APP_REDIS_URL
 
 /* create a connection to Redis with Node Redis */
 export const connection = createClient({ url })
