@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getUsageData } from '$lib/api';
+
 	import { Chart, registerables } from 'chart.js';
 	export let id: String;
 	import { onMount } from 'svelte';
@@ -71,31 +73,26 @@
 	};
 
 	const getUsage = async () => {
-		let res = await fetch(
-			'https://8000-lohanidamod-redishackur-9nx4sio0v2b.ws-us60.gitpod.io/urls/' + id + '/usage',
-			{
-				method: 'GET',
-				mode: 'cors'
-			}
-		);
-		let data = await res.json();
-		if (res.status == 200) {
-			for (let index = 0; index < data.length; index++) {
-				const element = data[index];
-				const date = new Date(element.timestamp);
-				chartLabels.push(date.toUTCString());
-				chartValues.push(element.value);
-				if (highest < element.value) {
-					highest = element.value;
-				}
-			}
-			// ceiling of the highest value
-			if (highest > 0) {
-				highest = Math.ceil(highest / tickCount) * tickCount;
-				stepSize = highest / tickCount;
-			}
-			createChart();
+		let data = await getUsageData(id);
+		if (data.error) {
+			console.log(data.error);
+			return;
 		}
+		for (let index = 0; index < data.length; index++) {
+			const element = data[index];
+			const date = new Date(element.timestamp);
+			chartLabels.push(date.toUTCString());
+			chartValues.push(element.value);
+			if (highest < element.value) {
+				highest = element.value;
+			}
+		}
+		// ceiling of the highest value
+		if (highest > 0) {
+			highest = Math.ceil(highest / tickCount) * tickCount;
+			stepSize = highest / tickCount;
+		}
+		createChart();
 	};
 </script>
 

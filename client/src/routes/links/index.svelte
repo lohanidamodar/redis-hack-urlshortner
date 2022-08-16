@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getUrls } from '$lib/api';
 	import Link from '$lib/components/Link.svelte';
 	import { onMount } from 'svelte';
 
@@ -10,18 +11,13 @@
 	});
 
 	const loadLinks = async () => {
-		let res = await fetch(
-			'https://8000-lohanidamod-redishackur-9nx4sio0v2b.ws-us60.gitpod.io/urls',
-			{
-				method: 'GET',
-				mode: 'cors'
-			}
-		);
-		let data = await res.json();
-		if (res.status == 200) {
-			urls = data;
-		} else {
-			error = data.error;
+		const res = await getUrls();
+		if (res instanceof Array) {
+			urls = res;
+			return;
+		}
+		if (res.error) {
+			error = res.error;
 		}
 	};
 </script>
