@@ -99,7 +99,7 @@ router.post('/urls/', async (req, res) => {
             id: url.entityId,
             shortName: url.shortName,
             originalUrl: url.originalUrl,
-            shortUrl: baseUrl + "/" + shortName,
+            shortUrl: baseUrl + "/" + url.shortName,
             createdAt: url.createdAt,
             updatedAt: url.updatedAt,
         })
@@ -142,8 +142,20 @@ router.get('/urls/:id/usage', async (req, res) => {
             }
         });
 
+        const hits = await client.ts.get(url.entityId+":hits")
 
-        res.send(usage)
+        res.send({
+            usage: usage,
+            hits: hits.value ?? 0,
+            url: {
+                id: url.entityId,
+                shortName: url.shortName,
+                originalUrl: url.originalUrl,
+                shortUrl: baseUrl + "/" + url.shortName,
+                createdAt: url.createdAt,
+                updatedAt: url.updatedAt,
+            }
+        })
     } catch(e) {
         console.log(e)
         res.status(500).send({error: 'Unexpected error'})
@@ -181,22 +193,20 @@ router.get('/urls/:id/usage/daily', async (req, res) => {
             }
         });
 
+        const hits = await client.ts.get(url.entityId+":hits")
 
-        res.send(usage)
-    } catch(e) {
-        console.log(e)
-        res.status(500).send({error: 'Unexpected error'})
-    }
-})
-
-router.get('/urls/:id/hits', async (req, res) => {
-    const url = await urlRepository.fetch(req.params.id);
-    if(!url)
-        return res.status(404).send({error: "Requested resource not found"})
-    
-    try {
-        const data = await client.ts.get(url.entityId+":hits")
-        res.send(data)
+        res.send({
+            usage: usage,
+            hits: hits.value ?? 0,
+            url: {
+                id: url.entityId,
+                shortName: url.shortName,
+                originalUrl: url.originalUrl,
+                shortUrl: baseUrl + "/" + url.shortName,
+                createdAt: url.createdAt,
+                updatedAt: url.updatedAt,
+            }
+        })
     } catch(e) {
         console.log(e)
         res.status(500).send({error: 'Unexpected error'})
