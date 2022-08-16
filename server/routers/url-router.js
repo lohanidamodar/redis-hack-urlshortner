@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { urlRepository } from '../om/url.js'
 import { v4 } from 'uuid'
-import { connection as client } from '../om/client.js';
+import { connection as client } from '../om/client.js'
+import { baseUrl } from '../middlewares/middleware.js'
+
 const PORT = process.env.APP_PORT || 8000;
-const baseUrl = process.env.APP_BASE_URL || `http://localhost:${PORT}`;
 
 export const router = Router()
 
@@ -51,7 +52,7 @@ router.get('/urls/:id', async (req, res) => {
         id: url.entityId,
         shortName: url.shortName,
         originalUrl: url.originalUrl,
-        shortUrl: baseUrl + "/" + url.shortName,
+        shortUrl: (baseUrl ?? (req.protocol + "://" + req.hostname)) + "/" + url.shortName,
         createdAt: url.createdAt,
         updatedAt: url.updatedAt
     })
