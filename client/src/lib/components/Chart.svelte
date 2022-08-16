@@ -91,9 +91,25 @@
 		if (highest > 0) {
 			highest = Math.ceil(highest / tickCount) * tickCount;
 			stepSize = highest / tickCount;
+		} else {
+			highest = 5;
 		}
 		createChart();
 	};
 </script>
 
-<canvas height="140" bind:this={chartCanvas} id="myChart" />
+<div>
+	<canvas height="80" bind:this={chartCanvas} id="myChart" />
+</div>
+
+<style>
+	div {
+		padding: 20px;
+		margin: 20px;
+		max-height: 450px;
+		max-width: 950px;
+		width: 100%;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+</style>

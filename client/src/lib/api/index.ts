@@ -36,3 +36,14 @@ export const getUsageData = async(id: String) => {
     );
     return await res.json();
 }
+
+export const getUrlDetails = async(id: String) => {
+    let res = await fetch(
+        baseUrl + '/urls/' + id,
+        {
+            method: 'GET',
+            mode: 'cors'
+        }
+    )
+    return await res.json();
+}

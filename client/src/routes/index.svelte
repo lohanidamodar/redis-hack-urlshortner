@@ -26,6 +26,8 @@
 			error = res.error;
 		} else {
 			urlDetails = res;
+			originalUrl = '';
+			shortName = '';
 		}
 	};
 </script>
