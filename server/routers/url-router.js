@@ -33,6 +33,9 @@ const redirect = async (req, res) => {
     res.redirect(url.originalUrl)
 }
 
+router.get('/', (req, res) => {
+    res.json({'developersAreAwesome': true});
+})
 
 router.get('/:shortName', [getUrls, redirect])
 
