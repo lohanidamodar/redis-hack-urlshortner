@@ -1,4 +1,6 @@
 <script lang="ts">
+import QrCode from "./QrCode.svelte";
+
 	export let link: any;
 	let onCopy = (event: Event) => {
 		console.log('copied to clipboard');
@@ -6,22 +8,24 @@
 	};
 </script>
 
-<a href={'/links/' + link.id}>
-	<div>
-		<span>{link.originalUrl}</span>
-		<p>
-			<span><a href={link.shortUrl} target="_blank">{link.shortUrl}</a></span>
-			<button on:click={onCopy}>copy</button>
-		</p>
-	</div>
-</a>
+<section>
+	<a href={'/links/' + link.id}>
+		<div>
+			<span>{link.originalUrl}</span>
+			<p>
+				<span><a href={link.shortUrl} target="_blank">{link.shortUrl}</a></span>
+				<button on:click={onCopy}>copy</button>
+			</p>
+		</div>
+	</a>
+</section>
 
 <style>
 	a {
 		text-decoration: none;
 	}
 	div {
-		background-color: #dddddd;
+		background-color: #fff;
 		border-radius: 8px;
 		width: auto;
 		margin: 20px;
