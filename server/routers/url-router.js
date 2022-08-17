@@ -146,7 +146,7 @@ router.get('/urls/:id/usage', async (req, res) => {
 
         res.send({
             usage: usage,
-            hits: hits.value ?? 0,
+            hits: hits?.value ?? 0,
             url: {
                 id: url.entityId,
                 shortName: url.shortName,
