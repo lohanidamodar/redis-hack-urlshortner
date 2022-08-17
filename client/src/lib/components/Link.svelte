@@ -1,10 +1,14 @@
 <script lang="ts">
-import QrCode from "./QrCode.svelte";
-
+	import { addToast } from "$lib/stores/toasts";
 	export let link: any;
 	let onCopy = (event: Event) => {
 		console.log('copied to clipboard');
+		event.preventDefault();
 		navigator.clipboard.writeText(link.shortUrl);
+		addToast({
+			message: 'Copied to clipboard',
+			type: "success"
+		})
 	};
 </script>
 
@@ -23,6 +27,7 @@ import QrCode from "./QrCode.svelte";
 <style>
 	a {
 		text-decoration: none;
+		color: #333;
 	}
 	div {
 		background-color: #fff;
