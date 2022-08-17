@@ -10,7 +10,7 @@ body {
     background-size: cover;
 }
 
-button {
+button, a.button {
     border: none;
     background: #1b3987;
     color: white;
@@ -20,7 +20,4 @@ button {
 }
 button:hover {
     background: #2a5bd7;
-}
-button:focus {
-    box-shadow: 0 0 0 2px rgb(206 218 250);
 }
