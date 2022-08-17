@@ -1,35 +1,42 @@
-<script lang="ts">
+<script>
 	import { onMount } from 'svelte';
-
-	export let codeValue: String;
-	export let squareSize: Number;
-
-	let qrcode;
-
-	onMount(() => {
-		let script = document.createElement('script');
-		script.src = 'https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js';
-		document.head.append(script);
-
-		script.onload = function () {
-			qrcode = new QRCode('qrcode', {
-				text: codeValue,
-				width: squareSize,
-				height: squareSize,
-				colorDark: '#000000',
-				colorLight: '#ffffff',
-				correctLevel: QRCode.CorrectLevel.H
-			});
-		};
-	});
-</script>
-
-<div id="qrcode" />
-
-<style>
-	#qrcode {
-		width: 20px;
-		height: 200x;
-		margin-top: 15px;
+	import { default as QrCode } from 'qrious';
+  
+	const QRcode = new QrCode();
+  
+	export let errorCorrection = "L";
+	export let background = "#fff";
+	export let color = "#000";
+	export let size = "200";
+	export let value = "";
+	export let padding = 0;
+	export let className = "qrcode";
+  
+	let image = '';
+  
+	function generateQrCode() {
+	  QRcode.set({
+		background,
+		foreground: color,
+		level: errorCorrection,
+		padding,
+		size,
+		value,
+	  });
+	  
+	  image = QRcode.toDataURL('image/jpeg');
 	}
-</style>
+  
+	$: {
+	  if(value) {
+		generateQrCode();
+	  }
+	}
+  
+	onMount(() => {
+	  generateQrCode();
+	});
+  
+  </script>
+  
+  <img src={image} alt={value} class={className}/>

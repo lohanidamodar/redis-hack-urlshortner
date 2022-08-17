@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { addToast } from "$lib/stores/toasts";
+	import { addToast } from '$lib/stores/toasts';
+import QrCode from './QrCode.svelte';
 	export let link: any;
 	let onCopy = (event: Event) => {
 		console.log('copied to clipboard');
@@ -7,8 +8,8 @@
 		navigator.clipboard.writeText(link.shortUrl);
 		addToast({
 			message: 'Copied to clipboard',
-			type: "success"
-		})
+			type: 'success'
+		});
 	};
 </script>
 
@@ -22,6 +23,9 @@
 			</p>
 		</div>
 	</a>
+	<div>
+		<QrCode value={link.shortUrl} />
+	</div>
 </section>
 
 <style>
@@ -54,7 +58,7 @@
 		background: #edf2fe;
 		color: #2a5bd7;
 		height: 35px;
-        margin-left: 20px;
+		margin-left: 20px;
 	}
 	button:hover {
 		background: #cedafa;
@@ -63,7 +67,7 @@
 
 	@media (max-width: 936px) {
 		p {
-            margin-top: 10px;
+			margin-top: 10px;
 			flex-direction: column;
 		}
 		div {
@@ -75,7 +79,7 @@
 		}
 		button {
 			margin-left: 0;
-            margin-top: 10px;
+			margin-top: 10px;
 			width: auto;
 		}
 	}
