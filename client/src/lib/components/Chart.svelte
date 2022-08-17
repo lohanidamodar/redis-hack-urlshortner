@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, beforeUpdate, afterUpdate } from 'svelte';
 	import { Chart, registerables } from 'chart.js';
 	export let data: any[];
 
@@ -10,26 +10,35 @@
 	let highest = 0;
 	let tickCount = 5;
 	let stepSize = 1;
-	for (let index = 0; index < data.length; index++) {
-		const element = data[index];
-		const date = new Date(element.timestamp);
-		chartLabels.push(date.toUTCString());
-		chartValues.push(element.value);
-		if (highest < element.value) {
-			highest = element.value;
-		}
-	}
-	// ceiling of the highest value
-	if (highest > 0) {
-		highest = Math.ceil(highest / tickCount) * tickCount;
-		stepSize = highest / tickCount;
-	} else {
-		highest = 5;
-	}
+	let chart: Chart;
+
 	const createChart = () => {
+		if (!chartCanvas) return;
+		if(chart) {
+			chart.destroy();
+		}
+		chartValues = [];
+		chartLabels = [];
+		for (let index = 0; index < data.length; index++) {
+			const element = data[index];
+			const date = new Date(element.timestamp);
+			chartLabels.push(date.toUTCString());
+			chartValues.push(element.value);
+			if (highest < element.value) {
+				highest = element.value;
+			}
+		}
+		// ceiling of the highest value
+		if (highest > 0) {
+			highest = Math.ceil(highest / tickCount) * tickCount;
+			stepSize = highest / tickCount;
+		} else {
+			highest = 5;
+		}
+
 		ctx = chartCanvas.getContext('2d');
 		Chart.register(...registerables);
-		var chart = new Chart(ctx, {
+		chart = new Chart(ctx, {
 			type: 'line',
 			data: {
 				labels: chartLabels,
@@ -82,6 +91,10 @@
 	};
 
 	onMount(() => {
+		createChart();
+	});
+
+	afterUpdate(() => {
 		createChart();
 	});
 </script>
