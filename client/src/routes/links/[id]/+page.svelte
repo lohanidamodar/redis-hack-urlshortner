@@ -3,9 +3,11 @@
 	import { getUsageData } from '$lib/api';
 	import Chart from '$lib/components/Chart.svelte';
 	import Link from '$lib/components/Link.svelte';
+	import Loading from '$lib/components/Loading.svelte';
 	import { addToast } from '$lib/stores/toasts';
 	import { onMount } from 'svelte';
 	let usageData: any = {};
+	let loading: boolean = true;
 
 	onMount(async () => {
 		try {
@@ -16,7 +18,9 @@
 					type: "error",
 				})
 			}
+			loading = false;
 		} catch(e: any) {
+			loading = false;
 			addToast({
 				message: e.toString(),
 				type: "error"
@@ -24,6 +28,10 @@
 		}
 	});
 </script>
+
+{#if loading}
+	<Loading />
+{/if}
 
 {#if usageData.hits}
 <h2>Hits: {usageData.hits}</h2>
