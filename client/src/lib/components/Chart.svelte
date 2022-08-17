@@ -92,6 +92,8 @@
 
 <style>
 	div {
+		background-color: #fff;
+		border-radius: 8px;
 		padding: 20px;
 		margin: 20px;
 		max-height: 450px;
