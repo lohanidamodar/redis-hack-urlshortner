@@ -40,5 +40,6 @@
 <style>
     h2 {
         margin-left: 20px;
+		color: #fff;
     }
 </style>
