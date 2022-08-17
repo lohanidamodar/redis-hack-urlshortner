@@ -54,7 +54,7 @@ To make deploys work, you need to create free account on [Redis Cloud](https://r
 
 ### Vercel
 
-[Insert Deploy on Vercel button](https://vercel.com/docs/deploy-button)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner%2Ftree%2Fmain%2Fserver&env=APP_PORT,APP_REDIS_URL,APP_BASE_URL&project-name=urlshortener&repo-name=urlshortener-redis&redirect-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner)
 
 ## More Information about Redis Stack
 
