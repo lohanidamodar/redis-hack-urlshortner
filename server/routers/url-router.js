@@ -111,11 +111,10 @@ router.post('/urls/', async (req, res) => {
 
 router.get('/urls/:id/usage', async (req, res) => {
     const url = await urlRepository.fetch(req.params.id);
-    if(!url)
+    if(!url || !url.entityId || !url.originalUrl)
         return res.status(404).send({error: "Requested resource not found"})
     
     try {
-        
         let from = Math.min(url.createdAt, new Date().getTime() - 24 * 3600000);
         
         // normalize to hour
@@ -164,7 +163,7 @@ router.get('/urls/:id/usage', async (req, res) => {
 
 router.get('/urls/:id/usage/daily', async (req, res) => {
     const url = await urlRepository.fetch(req.params.id);
-    if(!url)
+    if(!url || !url.entityId || !url.originalUrl)
         return res.status(404).send({error: "Requested resource not found"})
     
     try {

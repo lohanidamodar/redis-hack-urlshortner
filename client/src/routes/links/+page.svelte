@@ -2,11 +2,11 @@
 	import { getUrls } from '$lib/api';
 	import Link from '$lib/components/Link.svelte';
 	import Loading from '$lib/components/Loading.svelte';
+import { addToast } from '$lib/stores/toasts';
 	import { onMount } from 'svelte';
 
 	let loading = true;
 	let urls: any[] = [];
-	let error: string;
 
 	onMount(() => {
 		loading = true;
@@ -21,7 +21,10 @@
 			return;
 		}
 		if (res.error) {
-			error = res.error;
+			addToast({
+				message: res.error,
+				type: "error"
+			})
 		}
 		loading = false;
 	};
