@@ -30,7 +30,20 @@
 				<QrCode size={40} value={link.shortUrl} />
 			</button>
 			<button on:click={onCopy}>copy</button>
-			<p><a class="button" target="_blank" href={'https://www.facebook.com/sharer/sharer.php?' + 'u=' + link.shortUrl}>Facebook</a></p>
+			<p>
+				<a
+					class="button twitter"
+					target="_blank"
+					href={'https://twitter.com/intent/tweet?' + 'url=' + link.shortUrl}>Twitter</a
+				>
+			</p>
+			<p>
+				<a
+					class="button facebook"
+					target="_blank"
+					href={'https://www.facebook.com/sharer/sharer.php?' + 'u=' + link.shortUrl}>Facebook</a
+				>
+			</p>
 		</div>
 	</section>
 </a>
@@ -64,7 +77,6 @@
 	}
 
 	div.options p a {
-		background-color: #069;
 		padding: 8px;
 		color: #fff;
 		border-radius: 8px;
@@ -79,6 +91,14 @@
 	a {
 		text-decoration: none;
 		color: #333;
+	}
+
+	a.twitter {
+		background-color: rgb(29, 155, 240);
+	}
+
+	a.facebook {
+		background-color: #385898;
 	}
 
 	a.top {
