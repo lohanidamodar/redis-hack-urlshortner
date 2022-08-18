@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { addToast } from '$lib/stores/toasts';
+import FacebookIcon from './icons/FacebookIcon.svelte';
+	import QrCodeIcon from './icons/QRCodeIcon.svelte';
+	import TwitterIcon from './icons/TwitterIcon.svelte';
 	import Modal from './Modal.svelte';
 	import QrCode from './QrCode.svelte';
 	export let link: any;
@@ -17,33 +20,40 @@
 		event.preventDefault();
 		showQr = true;
 	};
+
+	let onTwitter = (event: Event) => {
+		event.preventDefault();
+		window.open('https://twitter.com/intent/tweet?' + 'url=' + link.shortUrl, '_blank');
+	}
+
+	let onFacebook = (event: Event) => {
+		event.preventDefault();
+		window.open('https://www.facebook.com/sharer/sharer.php?' + 'u=' + link.shortUrl, '_blank');
+	}
 </script>
 
 <a class="top" href={'/links/' + link.id}>
 	<section>
 		<div>
 			<p>{link.originalUrl}</p>
-			<p><a href={link.shortUrl} target="_blank">{link.shortUrl}</a></p>
+			<p><a class="text-primary" href={link.shortUrl} target="_blank">{link.shortUrl}</a></p>
 		</div>
 		<div class="options">
 			<button on:click={onShowQR} class="qr-code">
-				<QrCode size={40} value={link.shortUrl} />
+				<QrCodeIcon width="1.5em" />
 			</button>
 			<button on:click={onCopy}>copy</button>
-			<p>
-				<a
-					class="button twitter"
-					target="_blank"
-					href={'https://twitter.com/intent/tweet?' + 'url=' + link.shortUrl}>Twitter</a
-				>
-			</p>
-			<p>
-				<a
-					class="button facebook"
-					target="_blank"
-					href={'https://www.facebook.com/sharer/sharer.php?' + 'u=' + link.shortUrl}>Facebook</a
-				>
-			</p>
+			<button
+				class="button twitter"
+				on:click="{onTwitter}">
+				<TwitterIcon /> Twitter
+			</button>
+
+			<button
+				class="button facebook"
+				on:click="{onFacebook}">
+				<FacebookIcon width="1.5em" /> Facebook
+			</button>
 		</div>
 	</section>
 </a>
@@ -66,23 +76,6 @@
 		width: auto;
 		overflow: hidden;
 	}
-	button.qr-code {
-		overflow: hidden;
-		width: 40px;
-		height: 40px;
-		margin-left: 0px;
-	}
-	div.options p {
-		margin-left: 20px;
-	}
-
-	div.options p a {
-		padding: 8px;
-		color: #fff;
-		border-radius: 8px;
-		height: 40px;
-		font-size: 0.6em;
-	}
 
 	p {
 		margin: 0;
@@ -91,14 +84,6 @@
 	a {
 		text-decoration: none;
 		color: #333;
-	}
-
-	a.twitter {
-		background-color: rgb(29, 155, 240);
-	}
-
-	a.facebook {
-		background-color: #385898;
 	}
 
 	a.top {
@@ -112,17 +97,25 @@
 	}
 
 	a.top:hover {
-		background-color: #eeed;
+		background-color: #eee;
+	}
+
+	button.qr-code {
+		overflow: hidden;
+		margin-left: 0px;
 	}
 
 	button {
-		background: #edf2fe;
-		color: #2a5bd7;
+		background: #111;
+		color: var(--primary-color);
 		height: 40px;
-		margin-left: 20px;
+		margin-left: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px 15px;
 	}
 	button:hover {
-		background: #cedafa;
-		color: #2a5bd7;
+		background: #333;
 	}
 </style>

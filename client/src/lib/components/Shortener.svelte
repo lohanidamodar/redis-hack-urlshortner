@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { shorten } from '$lib/api';
 	import Link from '$lib/components/Link.svelte';
+import { addToast } from '$lib/stores/toasts';
 
 	let originalUrl: String;
 	let shortName: String;
@@ -11,18 +12,27 @@
 	let onShorten = async (event: Event) => {
 		event.preventDefault();
 		if (!originalUrl) {
-			error = 'URL is required';
+			addToast({
+				message: 'URL is required',
+				type: "error"
+			})
 			return;
 		}
 
 		if (!(originalUrl.startsWith('http://') || originalUrl.startsWith('https://'))) {
-			error = 'Not a valid url';
+			addToast({
+				message: 'URL is invalid',
+				type: "error",
+			})
 			return;
 		}
 
 		let res = await shorten(originalUrl, shortName);
 		if (res.error) {
-			error = res.error;
+			addToast({
+				message: res.error,
+				type: "error"
+			})
 		} else {
 			urlDetails = res;
 			originalUrl = '';

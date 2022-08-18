@@ -38,7 +38,6 @@
         padding: 16px;
         display: inline-block;
         text-decoration: none;
-        background-color: #d18;
         color: #fff;
     }
 

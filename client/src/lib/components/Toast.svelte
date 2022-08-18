@@ -34,6 +34,7 @@
   
   <style lang="postcss">
     article {
+      pointer-events: all;
       color: white;
       padding: 0.75rem 1.5rem;
       border-radius: 0.2rem;
