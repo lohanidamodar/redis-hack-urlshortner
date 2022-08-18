@@ -50,7 +50,7 @@
 {/if}
 
 {#if usageData.hits}
-<h2>Hits: {usageData.hits}</h2>
+<h2>Total Hits: {usageData.hits}</h2>
 {/if}
 
 {#if usageData.usage}
