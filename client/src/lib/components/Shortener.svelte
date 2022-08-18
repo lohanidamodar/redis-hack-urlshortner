@@ -63,16 +63,14 @@ import { addToast } from '$lib/stores/toasts';
 	div {
 		background-color: #fff;
 		border-radius: 8px;
-		width: auto;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: stretch;
-		padding: 20px;
+		padding: 40px;
 		margin: 20px;
 		box-sizing: border-box;
-		flex: 2;
-		max-width: 500px;
+		min-width: 500px;
 	}
 
 	label {
@@ -110,5 +108,12 @@ import { addToast } from '$lib/stores/toasts';
 		-webkit-box-shadow: 0 0 0 2px rgb(206 218 250);
 		-moz-box-shadow: 0 0 0 2px rgba(206, 218, 250, 1);
 		box-shadow: 0 0 0 2px rgb(206 218 250);
+	}
+
+	@media (max-width: 900px) {
+		div {
+			padding: 20px;
+			min-width: auto;
+		}
 	}
 </style>

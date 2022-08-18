@@ -3,7 +3,7 @@
 
 </script>
 
-<div>
+<section>
 	<Shortener />
 	<div class="info">
 		<h2>Welcome to ULR Shortener</h2>
@@ -15,16 +15,30 @@
 			<li>Quick share</li>
 		</ul>
 	</div>
-</div>
+</section>
 
 <style>
-	div {
+	section {
+		padding: 140px;
 		display: flex;
 		flex-flow: row;
+		justify-content: stretch;
+	}
+	ul {
+		margin-top: 0;
 	}
 	div.info {
 		padding-top: 20px;
+		padding-left: 40px;
 		color: white;
 		flex-flow: column;
+	}
+	@media (max-width: 1000px) {
+		section {
+			flex-flow: column;
+		}
+		div.info {
+			display: none;
+		}
 	}
 </style>
