@@ -16,7 +16,7 @@ export const addToast = (toast: any) => {
   const defaults: Toast = {
     id,
     type: 'info',
-    dismissible: true,
+    dismissible: false,
     timeout: 3000,
     message: '',
   }

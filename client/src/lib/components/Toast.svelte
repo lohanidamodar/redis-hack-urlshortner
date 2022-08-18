@@ -62,6 +62,7 @@
       padding: 0;
       margin: 0 0 0 auto;
       line-height: 1;
+      width: 40px;
       font-size: 1rem;
     }
   </style>
