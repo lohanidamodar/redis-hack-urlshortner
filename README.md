@@ -4,6 +4,26 @@ A URL shortener application build with ExpressJS, Redis and SvelteKit. Shorten U
 
 [Live Demo](https://urlui.vercel.app)
 
+## Table of Contents
+
+  - [Screenshots](#screenshots)
+  - [Overview video (Optional)](#overview-video-optional)
+  - [How it works](#how-it-works)
+    - [How the data is stored:](#how-the-data-is-stored)
+    - [How the data is accessed:](#how-the-data-is-accessed)
+  - [How to run it locally?](#how-to-run-it-locally)
+    - [Prerequisites](#prerequisites)
+    - [Local installation](#local-installation)
+      - [Running the server](#running-the-server)
+      - [Running the Client](#running-the-client)
+    - [Environment Variables](#environment-variables)
+  - [Deployment](#deployment)
+    - [Vercel](#vercel)
+    - [Let's get connected:](#lets-get-connected)
+  - [More Information about Redis Stack](#more-information-about-redis-stack)
+    - [Getting Started](#getting-started)
+
+
 ## Screenshots
 
 ![image](https://user-images.githubusercontent.com/6360216/185554653-0db5bb38-f744-4e7c-9fbb-bdc91df8598d.png)
@@ -13,11 +33,11 @@ A URL shortener application build with ExpressJS, Redis and SvelteKit. Shorten U
 ![image](https://user-images.githubusercontent.com/6360216/185554696-f3ae20d7-d385-4c0b-8784-0d0271ec0464.png)
 
 
-## Overview video (Optional)
+## Overview video
 
 Here's a short video that explains the project and how it uses Redis:
 
-[![Embed your YouTube video](https://i.ytimg.com/vi/vyxdC1qK4NE/maxresdefault.jpg)](https://www.youtube.com/watch?v=vyxdC1qK4NE)
+[![Embed your YouTube video](https://i.ytimg.com/vi/lssFG92i9hA/maxresdefault.jpg)](https://www.youtube.com/watch?v=lssFG92i9hA)
 
 ## How it works
 
