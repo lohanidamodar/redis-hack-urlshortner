@@ -38,35 +38,99 @@ Refer to [this example](https://github.com/redis-developer/basic-analytics-dashb
 
 ## How to run it locally?
 
-[Make sure you test this with a fresh clone of your repo, these instructions will be used to judge your app.]
-
 ### Prerequisites
 
-[Fill out with any prerequisites (e.g. Node, Docker, etc.). Specify minimum versions]
+- [Node.JS](https://nodejs.org) - v16.16.0
+- [Docker](https://docker.com) - v20.10.17
+
 
 ### Local installation
 
-[Insert instructions for local installation]
+
+First, clone the repository from github
+
+```
+git clone https://github.com/lohanidamodar/redis-hack-urlshortner
+```
+
+#### Running the server
+
+1. Go to `redis-hack-urlshortner/server`
+
+    ```bash
+    # Go to server folder
+    cd redis-hack-urlshortner/server
+
+    # environment variables
+    cp .env.example .env
+
+    # run the server stack
+    docker compose up -d
+    ```
+
+2. View logs to verify the server is running
+
+    ```
+    docker compose logs app
+    ```
+
+    And you should see the output similar to the following.
+
+    ```
+    server-app-1  | Server started at 8000
+    ```
+
+#### Running the Client
+
+1. Go to the client directory and install dependencies
+
+    ```bash
+    # Go to client directory
+    cd redis-hack-urlshortner/client
+
+    # install dependencies
+    npm install
+    ```
+
+2. Run the dev script to start the development server
+
+    ```bash
+    npm run dev
+    ```
+
+    You should see the output similar to the following.
+
+    ```
+    VITE v3.0.8  ready in 722 ms
+
+    ➜  Local:   http://127.0.0.1:5173/
+    ➜  Network: use --host to expose
+    ```
+
+3. Visit the provided link in your browser, you should see the home page
 
 ## Deployment
 
 To make deploys work, you need to create free account on [Redis Cloud](https://redis.info/try-free-dev-to)
 
-### Google Cloud Run
-
-[Insert Run on Google button](https://cloud.google.com/blog/products/serverless/introducing-cloud-run-button-click-to-deploy-your-git-repos-to-google-cloud)
-
-### Heroku
-
-[Insert Deploy on Heroku button](https://devcenter.heroku.com/articles/heroku-button)
-
-### Netlify
-
-[Insert Deploy on Netlify button](https://www.netlify.com/blog/2016/11/29/introducing-the-deploy-to-netlify-button/)
-
 ### Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner%2Ftree%2Fmain%2Fserver&env=APP_PORT,APP_REDIS_URL,APP_BASE_URL&project-name=urlshortener&repo-name=urlshortener-redis&redirect-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner)
+- Server 
+    
+    [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner%2Ftree%2Fmain%2Fserver&env=APP_PORT,APP_REDIS_URL,APP_BASE_URL&project-name=urlshortener&repo-name=urlshortener-server&redirect-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner)
+
+- Client
+
+    [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner%2Ftree%2Fmain%2Fclient&env=APP_SERVER_BASE_URL&project-name=urlshortener-client&repo-name=urlshortener-client&redirect-url=https%3A%2F%2Fgithub.com%2Flohanidamodar%2Fredis-hack-urlshortner)
+
+
+### Let's get connected:
+
+[![youtube](https://img.shields.io/badge/youtube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/reactbits)
+[![devto](https://img.shields.io/badge/dev.to-0A0A0A?style=for-the-badge&logo=devdotto&logoColor=white)](https://dev.to/lohanidamodar)
+[![twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/lohanidamodar)
+[![linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lohanidamodar/)
+
 
 ## More Information about Redis Stack
 
