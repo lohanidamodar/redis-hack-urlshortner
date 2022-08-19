@@ -56,13 +56,9 @@
 		<p class="error">{error}</p>
 	{/if}
 
-	<!-- {#if urlDetails} -->
-		<Link maxWidth="500px" link={{
-			id: '11',
-			shortUrl: 'https://google.com',
-			originalUrl: 'https://google.com'
-		}} />
-	<!-- {/if} -->
+	{#if urlDetails}
+		<Link maxWidth="500px" link={urlDetails} />
+	{/if}
 </section>
 
 <style>

@@ -69,21 +69,23 @@
 
 <style>
 	h2 {
-		margin-left: 20px;
 		color: #fff;
 	}
 	div.ticks {
 		display: flex;
 		flex-flow: row;
 		justify-content: flex-end;
+		height: 35px;
 		max-width: var(--maxWidth);
 	}
 	div button {
-		margin-left: 20px;
+		margin-left: 10px;
+		height: 35px;
+
 	}
 	button:disabled {
-		background-color: #ccc;
-		color: #000;
+		background-color: #111;
+		color: #fff;
 		cursor: default;
 	}
 	section {
