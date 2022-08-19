@@ -6,7 +6,6 @@ import { baseUrlMiddleware } from './middlewares/middleware.js'
 
 /* create an express app and use JSON */
 const app = new express()
-app.use(cookieParser())
 app.use(express.json())
 app.use(baseUrlMiddleware)
 
