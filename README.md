@@ -291,6 +291,12 @@ git clone https://github.com/lohanidamodar/redis-hack-urlshortner
     npm install
     ```
 
+2. Copy the default .env.example as .env
+
+    ```bash
+    cp .env.example .env
+    ```
+
 2. Run the dev script to start the development server
 
     ```bash
