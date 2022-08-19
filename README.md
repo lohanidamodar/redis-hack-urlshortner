@@ -21,7 +21,7 @@ Here's a short video that explains the project and how it uses Redis:
 
 ## How it works
 
-![Architecture Diagram](https://user-images.githubusercontent.com/6360216/185554374-54c81991-ada5-48de-9aff-710c0edf9d65.png)
+![Architecture Diagram](https://user-images.githubusercontent.com/6360216/185571798-01d76032-e03a-4852-bb84-005a243183ca.png)
 
 
 ### How the data is stored:
