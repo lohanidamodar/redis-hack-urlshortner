@@ -15,7 +15,7 @@
 </div>
 
 <style>
-    div.copyright {
+    .copyright {
         position: fixed;
         background-color: #111;
         color: #fff;
@@ -23,5 +23,11 @@
         box-sizing: border-box;
         padding: 10px 50px;
         bottom: 0;
+    }
+    .copyright a {
+        color: #fff;
+    }
+    .copyright a:visited {
+        color: #fff;
     }
 </style>
