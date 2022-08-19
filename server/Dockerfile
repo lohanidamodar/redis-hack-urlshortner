@@ -14,10 +14,10 @@ RUN npm install
 
 COPY --chown=node:node . .
 
-ENV _APP_PORT=8080 \
-    _APP_ENV=production \
-    _APP_REDIS_URL=redis://redis:6379 \
-    _APP_BASE_URL=http://localhost
+ENV APP_PORT=8000 \
+    APP_ENV=production \
+    APP_REDIS_URL=redis://redis:6379 \
+    APP_BASE_URL=http://localhost
 
 EXPOSE 8000
 

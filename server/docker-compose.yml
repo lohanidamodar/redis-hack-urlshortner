@@ -19,9 +19,10 @@ services:
     ports:
       - 8000:8000
     environment:
-      - _APP_REDIS_URL
-      - _APP_PORT
-      - _APP_BASE_URL
+      - APP_ENV
+      - APP_REDIS_URL
+      - APP_PORT
+      - APP_BASE_URL
     volumes:
       - ./:/home/node/app
 
