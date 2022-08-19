@@ -16,6 +16,8 @@ services:
   app:
     build:
       context: .
+    depends_on:
+      - redis
     ports:
       - 8000:8000
     environment:
