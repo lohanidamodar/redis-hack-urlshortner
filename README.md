@@ -26,15 +26,214 @@ Here's a short video that explains the project and how it uses Redis:
 
 ### How the data is stored:
 
-Refer to [this example](https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs#how-the-data-is-stored) for a more detailed example of what you need for this section.
+The project uses redis json to store Url records. Each record has following properties
+
+- originalUrl: string
+- shortName: string
+- createdAt: date
+- updatedAt: date
+
+To easily work with redis project uses [Redis OM for Node.js](https://github.com/redis/redis-om-node).
+
+1. Schema definition
+
+    ```js
+    // server/app/om/url.js
+    import { Entity, Schema } from 'redis-om'
+    import client from './client.js'
+
+    class Url extends Entity { }
+
+    const urlSchema = new Schema(Url, {
+        originalUrl: { type: 'string' },
+        shortName: { type: 'string' },
+        createdAt: { type: 'date' },
+        updatedAt: { type: 'date' },
+    })
+
+    export const urlRepository = client.fetchRepository(urlSchema)
+
+    await urlRepository.createIndex()
+    ```
+
+2. Add new Url record
+
+    When app receives a request to create new record, it validates the request and then creates the record using urlRepository as the following
+
+    ```js
+    // server/app/routers/url-router.js
+    router.post('/urls/', async (req, res) => {
+        // validate request confirm the shortName is available
+        // also generate short if not provided
+        ...
+        const url = await urlRepository.createAndSave({
+            originalUrl: originalUrl,
+            shortName: shortName,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+        ...
+    }
+    ```
+
+    The project also uses RedisTimeSeries to store the usage data for the Urls. Three different time series are created for each Url record.
+
+    ```js
+    // server/app/routers/url-router.js
+
+    router.post('/urls/', async (req, res) => {
+        ...
+        // Timeseries to store data every time a URL is hit, that is retained
+        // for 28 hours and is used to generate hourly usage chart for Url
+        await client.ts.create(url.entityId, {
+            RETENTION: 28 * 60 * 60 * 1000,
+        })
+
+        // Timeseries to aggregate the above data calculating the sum of all
+        // the hits every hour and is retained for 33 days.
+        // It is used to display the daily usage chart for Url
+        await client.ts.create(url.entityId+":hourly", {
+            RETENTION: 33 * 24 * 60 * 60 * 1000,
+        })
+
+        // Rule to aggregate hourly data and store it 
+        await client.ts.createRule(url.entityId, url.entityId+":hourly", "SUM", 3600000)
+
+        // Time series to incrementally keep the record of total hits, retained
+        // indefinitely
+        await client.ts.create(url.entityId+":hits")
+        ...
+    }
+    ```
+
+    And every time a shortcut is used, these metrics gets collected as the following
+
+    ```js
+    // server/app/routers/url-router.js -> redirect
+    ...
+    // Realtime hits data
+    await client.ts.add(url.entityId, new Date().getTime(), 1)
+
+    // Total hits always incremented
+    await client.ts.incrBy(url.entityId + ":hits", 1)
+    ...
+    ```
+
 
 ### How the data is accessed:
 
-Refer to [this example](https://github.com/redis-developer/basic-analytics-dashboard-redis-bitmaps-nodejs#how-the-data-is-accessed) for a more detailed example of what you need for this section.
+1. Redirect to Url when short name is provided
 
-### Performance Benchmarks
+    We search the Url repository using the given short name and if the record is found and exists, we use the originalLink present in the record to redirect
 
-[If you migrated an existing app to use Redis, please put performance benchmarks here to show the performance improvements.]
+    ```js
+    // server/app/routers/url-router.js
+    
+    const redirect = async (req, res) => {
+        // search by shortName and return the first match
+        const url = await urlRepository.search().where('shortName').eq(req.params.shortName).return.first();
+        
+        // throw 404 if record is not found
+        if(!url) {
+            return res.status(404).send("URL not found");
+        }
+
+        // Update Timeseries if record is found
+        await client.ts.add(url.entityId, new Date().getTime(), 1)
+        await client.ts.incrBy(url.entityId + ":hits", 1)
+
+        // redirect to the originalUrl
+        res.redirect(url.originalUrl)
+    }
+    ```
+
+2. Get history of all the short Urls created
+
+    We return all the records using the search on urlRepository.
+
+    ```js
+    // server/app/routers/url-router.js
+    const getUrls = async (req, res, next) => {
+        if(req.params.shortName === "urls") {
+            let urls = await urlRepository.search().return.all()
+            urls = urls.map((url) => ({
+                id: url.entityId,
+                shortName: url.shortName,
+                originalUrl: url.originalUrl,
+                shortUrl: baseUrl + "/" + url.shortName,
+                createdAt: url.createdAt,
+                updatedAt: url.updatedAt
+            }))
+            return res.send(urls)
+        }
+        next()
+    }
+    ```
+
+2. Get hourly/daily metrics of a Url
+
+    The hourly metrics is recrived from the realtime timeseries data, aggregating hourly during the request as the following
+
+    ```js
+    router.get('/urls/:id/usage', async (req, res) => {
+        // fetch URL using the repository
+        const url = await urlRepository.fetch(req.params.id);
+
+        // throw error if it doesn't exist
+        ...
+        
+        try {
+            let from = Math.min(url.createdAt, new Date().getTime() - 24 * 3600000);
+            
+            // normalize to hour
+            from = Math.floor(from / 3600000) * 3600000;
+            const to = Math.ceil(new Date() / 3600000) * 3600000;
+
+            const data = await client.ts.range(url.entityId, from, to, {
+                AGGREGATION: {
+                    type: "SUM",
+                    timeBucket: 60 * 60 * 1000
+                }
+            })
+
+            // Fily empty dataset with 0s
+            const hours = [];
+            for(let i = from; i <= to; i += 3600000) {
+                hours.push(new Date(i))
+            }
+            const usage = hours.map((hour) => {
+                const hourData = data.find((d) => d.timestamp == hour.getTime())
+                return {
+                    datetime: hour.toString(),
+                    timestamp: hour.getTime(),
+                    value: hourData ? hourData.value : 0
+                }
+            });
+
+            // Also get total hits
+            const hits = await client.ts.get(url.entityId+":hits")
+
+            res.send({
+                usage: usage,
+                hits: hits?.value ?? 0,
+                url: {
+                    id: url.entityId,
+                    shortName: url.shortName,
+                    originalUrl: url.originalUrl,
+                    shortUrl: baseUrl + "/" + url.shortName,
+                    createdAt: url.createdAt,
+                    updatedAt: url.updatedAt,
+                }
+            })
+        } catch(e) {
+            console.log(e)
+            res.status(500).send({error: 'Unexpected error'})
+        }
+    })
+    ```
+
+    To retrieve the daily usage we use the exact same workflow, however we use the hourly timeseries and aggregate for every day during the request like we aggregate for every hour above.
+
 
 ## How to run it locally?
 
