@@ -1,9 +1,9 @@
 FROM node:16-alpine
 
-RUN mkdir -p /home/node/app/node_modules \
-    && chown -R node:node /home/node/app
+RUN mkdir -p /home/node/server/node_modules \
+    && chown -R node:node /home/node/server
 
-WORKDIR /home/node/app
+WORKDIR /home/node/server
 
 COPY package*.json ./
 
@@ -21,4 +21,4 @@ ENV APP_PORT=8000 \
 
 EXPOSE 8000
 
-CMD ["node", "server.js"]
+CMD ["node", "app/server.js"]

@@ -26,7 +26,7 @@ services:
       - APP_PORT
       - APP_BASE_URL
     volumes:
-      - ./:/home/node/app
+      - ./app:/home/node/server/app
 
 volumes:
   redis:
