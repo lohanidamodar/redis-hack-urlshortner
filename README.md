@@ -7,7 +7,7 @@ A URL shortener application build with ExpressJS, Redis and SvelteKit. Shorten U
 ## Table of Contents
 
   - [Screenshots](#screenshots)
-  - [Overview video (Optional)](#overview-video-optional)
+  - [Overview video](#overview-video)
   - [How it works](#how-it-works)
     - [How the data is stored:](#how-the-data-is-stored)
     - [How the data is accessed:](#how-the-data-is-accessed)
