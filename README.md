@@ -2,15 +2,27 @@
 
 A URL shortener application build with ExpressJS, Redis and SvelteKit. Shorten URLs and also get link visit history.
 
-// Screenshots
+[Live Demo](https://urlui.vercel.app)
 
-# Overview video (Optional)
+## Screenshots
+
+![image](https://user-images.githubusercontent.com/6360216/185554653-0db5bb38-f744-4e7c-9fbb-bdc91df8598d.png)
+
+![image](https://user-images.githubusercontent.com/6360216/185554679-860051b6-734b-42f6-b0b4-039613537236.png)
+
+![image](https://user-images.githubusercontent.com/6360216/185554696-f3ae20d7-d385-4c0b-8784-0d0271ec0464.png)
+
+
+## Overview video (Optional)
 
 Here's a short video that explains the project and how it uses Redis:
 
 [![Embed your YouTube video](https://i.ytimg.com/vi/vyxdC1qK4NE/maxresdefault.jpg)](https://www.youtube.com/watch?v=vyxdC1qK4NE)
 
 ## How it works
+
+![Architecture Diagram](https://user-images.githubusercontent.com/6360216/185554374-54c81991-ada5-48de-9aff-710c0edf9d65.png)
+
 
 ### How the data is stored:
 
