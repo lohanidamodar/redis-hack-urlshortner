@@ -14,67 +14,69 @@
 	onMount(async () => {
 		try {
 			usageData = await getUsageData($page.params.id);
-			if(usageData.error) {
+			if (usageData.error) {
 				addToast({
 					message: usageData.error,
-					type: "error",
-				})
+					type: 'error'
+				});
 			}
 			loading = false;
-		} catch(e: any) {
+		} catch (e: any) {
 			loading = false;
 			addToast({
 				message: e.toString(),
-				type: "error"
-			})
+				type: 'error'
+			});
 		}
 	});
 
 	const onClick24 = async (event: Event) => {
-		if(period !== '24h') {
+		if (period !== '24h') {
 			usageData = await getUsageData($page.params.id);
 			period = '24h';
 		}
-	}
+	};
 
 	const onClick30d = async (event: Event) => {
-		if(period !== '30d') {
+		if (period !== '30d') {
 			usageData = await getUsageDataDaily($page.params.id);
 			period = '30d';
 		}
-	}
+	};
 </script>
 
-{#if loading}
-	<Loading />
-{/if}
+<section>
+	{#if loading}
+		<Loading />
+	{/if}
 
-{#if usageData.hits}
-<h2>Total Hits: {usageData.hits}</h2>
-{/if}
+	{#if usageData.hits}
+		<h2>Total Hits: {usageData.hits}</h2>
+	{/if}
 
-{#if usageData.usage}
-<div class="ticks">
-	<button disabled={period == '24h'} on:click={onClick24}>24h</button>
-	<button disabled={period == '30d'} on:click={onClick30d} >30d</button>
-</div>
-<Chart bind:data={usageData.usage} />
-{/if}
+	{#if usageData.usage}
+		<div class="ticks">
+			<button disabled={period == '24h'} on:click={onClick24}>24h</button>
+			<button disabled={period == '30d'} on:click={onClick30d}>30d</button>
+		</div>
+		<Chart bind:data={usageData.usage} />
+	{/if}
 
-{#if usageData.url?.id}
-	<Link link={usageData.url} />
-{/if}
+	{#if usageData.url?.id}
+		<Link link={usageData.url} />
+	{/if}
+</section>
 
 <style>
-    h2 {
-        margin-left: 20px;
+	h2 {
+		margin-left: 20px;
 		color: #fff;
-    }
+	}
 	div.ticks {
 		display: flex;
 		flex-flow: row;
 		justify-content: flex-end;
-		max-width: 960px;
+		max-width: var(--maxWidth);
 	}
 	div button {
 		margin-left: 20px;
@@ -83,5 +85,8 @@
 		background-color: #ccc;
 		color: #000;
 		cursor: default;
+	}
+	section {
+		padding-left: 40px;
 	}
 </style>

@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { addToast } from '$lib/stores/toasts';
-import FacebookIcon from './icons/FacebookIcon.svelte';
+	import FacebookIcon from './icons/FacebookIcon.svelte';
 	import QrCodeIcon from './icons/QRCodeIcon.svelte';
 	import TwitterIcon from './icons/TwitterIcon.svelte';
 	import Modal from './Modal.svelte';
 	import QrCode from './QrCode.svelte';
 	export let link: any;
+	export let maxWidth: string = "50%";
 	let showQr = false;
 	let onCopy = (event: Event) => {
 		console.log('copied to clipboard');
@@ -24,12 +25,12 @@ import FacebookIcon from './icons/FacebookIcon.svelte';
 	let onTwitter = (event: Event) => {
 		event.preventDefault();
 		window.open('https://twitter.com/intent/tweet?' + 'url=' + link.shortUrl, '_blank');
-	}
+	};
 
 	let onFacebook = (event: Event) => {
 		event.preventDefault();
 		window.open('https://www.facebook.com/sharer/sharer.php?' + 'u=' + link.shortUrl, '_blank');
-	}
+	};
 </script>
 
 <a class="top" href={'/links/' + link.id}>
@@ -43,15 +44,11 @@ import FacebookIcon from './icons/FacebookIcon.svelte';
 				<QrCodeIcon width="1.5em" />
 			</button>
 			<button on:click={onCopy}>copy</button>
-			<button
-				class="button twitter"
-				on:click="{onTwitter}">
+			<button class="button twitter" on:click={onTwitter}>
 				<TwitterIcon /> Twitter
 			</button>
 
-			<button
-				class="button facebook"
-				on:click="{onFacebook}">
+			<button class="button facebook" on:click={onFacebook}>
 				<FacebookIcon width="1.5em" /> Facebook
 			</button>
 		</div>
@@ -67,6 +64,7 @@ import FacebookIcon from './icons/FacebookIcon.svelte';
 		display: flex;
 		flex-flow: column;
 		padding: 20px;
+		max-width: var(--maxWidth, 900px);
 	}
 	div.options {
 		display: flex;
@@ -90,10 +88,9 @@ import FacebookIcon from './icons/FacebookIcon.svelte';
 		display: block;
 		background-color: #fff;
 		margin-top: 20px;
-		margin-left: 20px;
 		border-radius: 8px;
 		width: auto;
-		max-width: 960px;
+		max-width: var(--maxWidth);
 	}
 
 	a.top:hover {

@@ -41,4 +41,10 @@
 			display: none;
 		}
 	}
+
+	@media (max-height: 1000px) {
+		section {
+			padding-top: 50px;
+		}
+	}
 </style>

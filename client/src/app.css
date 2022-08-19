@@ -1,5 +1,6 @@
 :root {
     --primary-color: #d18;
+    --maxWidth: 960px;
 }
 html, body {
     font-family: 'Poppins';

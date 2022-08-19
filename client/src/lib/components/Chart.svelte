@@ -108,9 +108,9 @@
 		background-color: #fff;
 		border-radius: 8px;
 		padding: 20px;
-		margin: 20px;
+		margin-top: 10px;
 		max-height: 450px;
-		max-width: 950px;
+		max-width: var(--maxWidth);
 		width: 100%;
 		box-sizing: border-box;
 		overflow: hidden;

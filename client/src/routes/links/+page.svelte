@@ -2,7 +2,7 @@
 	import { getUrls } from '$lib/api';
 	import Link from '$lib/components/Link.svelte';
 	import Loading from '$lib/components/Loading.svelte';
-import { addToast } from '$lib/stores/toasts';
+	import { addToast } from '$lib/stores/toasts';
 	import { onMount } from 'svelte';
 
 	let loading = true;
@@ -23,8 +23,8 @@ import { addToast } from '$lib/stores/toasts';
 		if (res.error) {
 			addToast({
 				message: res.error,
-				type: "error"
-			})
+				type: 'error'
+			});
 		}
 		loading = false;
 	};
@@ -46,5 +46,6 @@ import { addToast } from '$lib/stores/toasts';
 <style>
 	div {
 		padding: 20px;
+		padding-left: 40px;
 	}
 </style>

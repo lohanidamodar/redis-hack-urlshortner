@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { shorten } from '$lib/api';
 	import Link from '$lib/components/Link.svelte';
-import { addToast } from '$lib/stores/toasts';
+	import { addToast } from '$lib/stores/toasts';
 
 	let originalUrl: String;
 	let shortName: String;
@@ -14,16 +14,16 @@ import { addToast } from '$lib/stores/toasts';
 		if (!originalUrl) {
 			addToast({
 				message: 'URL is required',
-				type: "error"
-			})
+				type: 'error'
+			});
 			return;
 		}
 
 		if (!(originalUrl.startsWith('http://') || originalUrl.startsWith('https://'))) {
 			addToast({
 				message: 'URL is invalid',
-				type: "error",
-			})
+				type: 'error'
+			});
 			return;
 		}
 
@@ -31,8 +31,8 @@ import { addToast } from '$lib/stores/toasts';
 		if (res.error) {
 			addToast({
 				message: res.error,
-				type: "error"
-			})
+				type: 'error'
+			});
 		} else {
 			urlDetails = res;
 			originalUrl = '';
@@ -41,25 +41,35 @@ import { addToast } from '$lib/stores/toasts';
 	};
 </script>
 
-<div>
-	<label for="originalUrl">🔗 Your Original URL</label>
-	<input bind:value={originalUrl} type="text" name="originalUrl" placeholder="URL" />
-	{#if customName}
-		<label for="shortName">🪄 Customize Link (Optional)</label>
-		<input class="width-small" placeholder="alias" type="text" bind:value={shortName} />
+<section>
+	<div>
+		<label for="originalUrl">🔗 Your Original URL</label>
+		<input bind:value={originalUrl} type="text" name="originalUrl" placeholder="URL" />
+		{#if customName}
+			<label for="shortName">🪄 Customize Link (Optional)</label>
+			<input class="width-small" placeholder="alias" type="text" bind:value={shortName} />
+		{/if}
+		<button on:click={onShorten}>Shorten!</button>
+	</div>
+
+	{#if error}
+		<p class="error">{error}</p>
 	{/if}
-	<button on:click={onShorten}>Shorten!</button>
-</div>
 
-{#if error}
-	<p class="error">{error}</p>
-{/if}
-
-{#if urlDetails}
-	<Link link={urlDetails} />
-{/if}
+	<!-- {#if urlDetails} -->
+		<Link maxWidth="500px" link={{
+			id: '11',
+			shortUrl: 'https://google.com',
+			originalUrl: 'https://google.com'
+		}} />
+	<!-- {/if} -->
+</section>
 
 <style>
+	section {
+		display: flex;
+		flex-flow: column;
+	}
 	div {
 		background-color: #fff;
 		border-radius: 8px;
@@ -68,7 +78,6 @@ import { addToast } from '$lib/stores/toasts';
 		justify-content: center;
 		align-items: stretch;
 		padding: 40px;
-		margin: 20px;
 		box-sizing: border-box;
 		min-width: 500px;
 	}
@@ -91,8 +100,8 @@ import { addToast } from '$lib/stores/toasts';
 		color: #36383b;
 		padding: 0 20px;
 		margin-right: 0;
-			display: inline-block;
-			margin-bottom: 10px;
+		display: inline-block;
+		margin-bottom: 10px;
 	}
 
 	p.error {
