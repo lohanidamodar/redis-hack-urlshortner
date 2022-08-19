@@ -314,6 +314,16 @@ git clone https://github.com/lohanidamodar/redis-hack-urlshortner
 
 3. Visit the provided link in your browser, you should see the home page
 
+### Environment Variables
+
+- Server
+    - APP_PORT: port to be used by web server, default is 8000
+    - APP_BASE_URL: If you want to provide different base URL for your server that will be used to construct short URL, default is empty. Will automatically use the server's deployment Url if not provided
+    - APP_REDIS_URL: Redis connection string in the format `redis://....`. It is required to successfully connect to redis
+    - APP_ENV: Environment of the app, default is production
+- Client
+    - APP_SERVER_BASE_URL: Base URL of the server. It is required for client to be able to access the server
+
 ## Deployment
 
 To make deploys work, you need to create free account on [Redis Cloud](https://redis.info/try-free-dev-to)
