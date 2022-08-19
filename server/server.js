@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import express from 'express'
-import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { router as urlRouter } from './routers/url-router.js'
 import { baseUrlMiddleware } from './middlewares/middleware.js'

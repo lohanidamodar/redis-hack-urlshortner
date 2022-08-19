@@ -13,14 +13,11 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "redis": "^4.0.4",
     "redis-om": "^0.2.0",
-    "swagger-ui-express": "^4.3.0",
-    "uuid": "^8.3.2",
-    "yamljs": "^0.3.0"
+    "uuid": "^8.3.2"
   }
 }
